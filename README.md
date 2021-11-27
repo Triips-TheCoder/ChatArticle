@@ -1,4 +1,4 @@
-# Charticle :
+# ChatArticle :
 ChatArticle est une petite application de chat un peu à la messenger.
 
 # Objectif :
