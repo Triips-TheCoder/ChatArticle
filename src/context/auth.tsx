@@ -1,6 +1,7 @@
 import {createContext, useEffect, useState} from 'react'
 import {onAuthStateChanged, User} from 'firebase/auth'
 import {AUTH} from "../firebase"
+import Loading from '../components/Loading/Loading'
 
 type AuthContextProviderProps = {
     children: React.ReactNode
@@ -20,9 +21,9 @@ const AuthProvider = ({children}: AuthContextProviderProps) => {
     }, [])
 
     if (loading)
-        return <div>"loading"</div>
+        return <Loading/>
 
-    return <AuthContext.Provider value={ user }>{children}</AuthContext.Provider>
+    return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>
 }
 
 export default AuthProvider
