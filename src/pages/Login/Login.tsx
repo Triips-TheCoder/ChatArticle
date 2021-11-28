@@ -58,7 +58,7 @@ const Login = () => {
         } catch (err: any) {
             setData({
                 ...data,
-                error: err.message,
+                error: "Email ou mot de passe incorrect.",
                 loading: false
             })
         }
