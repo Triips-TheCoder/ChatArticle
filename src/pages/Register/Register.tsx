@@ -40,7 +40,7 @@ const Register = () => {
         })
 
         if (!name || !email || !password)
-            setData({...data, error: "Veuillez remplir tout les champs."})
+            setData({...data, error: "Veuillez renseigner tout les champs."})
 
         try {
             const result = await createUserWithEmailAndPassword(
@@ -64,14 +64,22 @@ const Register = () => {
                 error: null,
                 loading: false
             })
-            
+
             navigate('/', {replace: true})
         } catch (err: any) {
-            setData({
-                ...data,
-                error: err.message,
-                loading: false
-            })
+            if (!name || !email || !password) {
+                setData({
+                    ...data,
+                    error: 'Veuillez renseigner tout les champs.',
+                    loading: false
+                })
+            } else if (password.length < 6) {
+                setData({
+                    ...data,
+                    error: "Votre mot de passe doit contenir au moins 6 caractères.",
+                    loading: false
+                })
+            }
         }
     }
 
@@ -85,7 +93,7 @@ const Register = () => {
                 </div>
                 <div className="input-container">
                     <label htmlFor="email">Email:</label>
-                    <input type="text" id="email" name="email" value={email} onChange={handleChange}/>
+                    <input type="email" id="email" name="email" value={email} onChange={handleChange}/>
                 </div>
                 <div className="input-container">
                     <label htmlFor="password">Mot de passe:</label>
@@ -93,7 +101,7 @@ const Register = () => {
                 </div>
                 {error && <p className="error">{error}</p>}
                 <div className="btn-container">
-                    <button className="btn" disabled={loading}>S'inscrire</button>
+                    <button className="btn" disabled={loading}>{loading ? "Inscription en cours..." : "S'inscrire !"}</button>
                 </div>
             </form>
         </section>
