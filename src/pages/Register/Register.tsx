@@ -3,6 +3,7 @@ import {useState} from "react"
 import {createUserWithEmailAndPassword} from "firebase/auth"
 import {AUTH, DB} from '../../firebase'
 import {setDoc, doc, Timestamp} from 'firebase/firestore'
+import {useNavigate} from 'react-router-dom'
 
 interface User {
     name: string,
@@ -20,6 +21,8 @@ const Register = () => {
         error: null,
         loading: false
     })
+
+    const navigate = useNavigate()
 
     const {name, email, password, error, loading} = data
 
@@ -61,6 +64,8 @@ const Register = () => {
                 error: null,
                 loading: false
             })
+            
+            navigate('/', {replace: true})
         } catch (err: any) {
             setData({
                 ...data,
@@ -88,7 +93,7 @@ const Register = () => {
                 </div>
                 {error && <p className="error">{error}</p>}
                 <div className="btn-container">
-                    <button className="btn">S'inscrire</button>
+                    <button className="btn" disabled={loading}>S'inscrire</button>
                 </div>
             </form>
         </section>
