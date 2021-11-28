@@ -1,10 +1,10 @@
 import "./Navbar.css"
 import {Link} from "react-router-dom"
-import {AUTH, DB} from '../firebase'
+import {AUTH, DB} from '../../firebase'
 import {signOut} from "firebase/auth"
 import {updateDoc, doc} from 'firebase/firestore'
 import {useContext} from "react"
-import {AuthContext} from "../context/auth"
+import {AuthContext} from "../../context/auth"
 import {useNavigate} from 'react-router-dom'
 
 const Navbar = () => {
