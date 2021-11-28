@@ -1,5 +1,8 @@
 import './Register.css'
 import {useState} from "react"
+import {createUserWithEmailAndPassword} from "firebase/auth"
+import {AUTH, DB} from '../../firebase'
+import {setDoc, doc, Timestamp} from 'firebase/firestore'
 
 interface User {
     name: string,
@@ -27,9 +30,44 @@ const Register = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setData({
+            ...data,
+            error: null,
+            loading: true
+        })
+
         if (!name || !email || !password)
             setData({...data, error: "Veuillez remplir tout les champs."})
 
+        try {
+            const result = await createUserWithEmailAndPassword(
+                AUTH,
+                email,
+                password
+            )
+
+            await setDoc(doc(DB, 'users', result.user.uid), {
+                uid: result.user.uid,
+                name,
+                email,
+                createdAt: Timestamp.fromDate(new Date()),
+                isOnline: true
+            })
+
+            setData({
+                name: "",
+                email: "",
+                password: "",
+                error: null,
+                loading: false
+            })
+        } catch (err: any) {
+            setData({
+                ...data,
+                error: err.message,
+                loading: false
+            })
+        }
     }
 
     return (
@@ -46,8 +84,9 @@ const Register = () => {
                 </div>
                 <div className="input-container">
                     <label htmlFor="password">Mot de passe:</label>
-                    <input type="text" id="password" name="password" value={password} onChange={handleChange}/>
+                    <input type="password" id="password" name="password" value={password} onChange={handleChange}/>
                 </div>
+                {error && <p className="error">{error}</p>}
                 <div className="btn-container">
                     <button className="btn">S'inscrire</button>
                 </div>
