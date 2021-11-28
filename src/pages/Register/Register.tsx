@@ -5,7 +5,7 @@ import {AUTH, DB} from '../../firebase'
 import {setDoc, doc, Timestamp} from 'firebase/firestore'
 import {useNavigate} from 'react-router-dom'
 
-interface User {
+interface SignInUser {
     name: string,
     email: string,
     password: string,
@@ -14,7 +14,7 @@ interface User {
 }
 
 const Register = () => {
-    const [data, setData] = useState<User>({
+    const [data, setData] = useState<SignInUser>({
         name: '',
         email: '',
         password: '',
