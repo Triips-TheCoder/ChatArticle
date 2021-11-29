@@ -1,7 +1,3 @@
-.profile {
-    width: 100%;
-}
-
 .profile-container {
     display: flex;
     align-items: center;
@@ -9,7 +5,6 @@
 
 .img-container {
     position: relative;
-    margin-right: 20px;
 }
 
 .img-container img {
@@ -20,6 +15,23 @@
     transition: 0.5s ease-in-out all;
 }
 
+.img-container:hover img {
+    opacity: 0.4;
+}
+
+.img-container:hover .overlay {
+    opacity: 1;
+}
+
+.overlay {
+    transition: 0.5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
 .text-container {
     flex-grow: 1;
     display: flex;
@@ -43,5 +55,9 @@
 @media (min-width: 765px) {
     .text-container {
         min-height: clamp(100px, 10vh, 135px);
+    }
+
+    .img-container {
+        margin-right: 20px;
     }
 }
