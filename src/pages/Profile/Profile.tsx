@@ -3,7 +3,7 @@ import profileImg from '../../../src/pages/Profile/logo192.png'
 
 const Profile = () => {
     return (
-        <section>
+        <section className="register-login profile">
             <div className="profile-container">
                 <div className="img-container">
                     <img src={profileImg} alt="avatar"/>

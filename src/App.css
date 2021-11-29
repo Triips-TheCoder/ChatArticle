@@ -10,3 +10,22 @@
 a {
   text-decoration: none;
 }
+
+.register-login {
+  max-width: 80%;
+  margin: 100px auto 0 auto;
+  box-shadow: 1px 2px 10px var(--color-4);
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.register-login h3 {
+  text-align: center;
+  font-size: 20px;
+  color: var(--color-4);
+}
+
+.register-login .form {
+  margin-top: 30px;
+  padding: 0 20px;
+}

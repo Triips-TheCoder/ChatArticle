@@ -65,7 +65,7 @@ const Login = () => {
     }
 
     return (
-        <section>
+        <section className="register-login">
             <h3>Se connecter à votre compte</h3>
             <form className='form' onSubmit={handleSubmit}>
                 <div className="input-container">

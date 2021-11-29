@@ -22,15 +22,6 @@ const Navbar = () => {
         navigate("/login", {replace: true})
     }
 
-    //useEffect(() => {
-    //    onAuthStateChanged(AUTH, user => {
-    //        if (user)
-    //            console.log(AUTH.currentUser)
-    //        else
-    //            console.log("l'utilisateur est déconnecter")
-    //    })
-    //}, [])
-
     return (
         <nav>
             <h3><Link to="/">ChatArticle</Link></h3>

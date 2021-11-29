@@ -84,7 +84,7 @@ const Register = () => {
     }
 
     return (
-        <section>
+        <section className="register-login">
             <h3>Créer un compte</h3>
             <form className='form' onSubmit={handleSubmit}>
                 <div className="input-container">
