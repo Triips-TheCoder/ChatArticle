@@ -13,6 +13,7 @@
     border-radius: 50%;
     border: 1px solid var(--color-4);
     transition: 0.5s ease-in-out all;
+    object-fit: cover;
 }
 
 .img-container:hover img {
