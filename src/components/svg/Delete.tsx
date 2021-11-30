@@ -1,6 +1,11 @@
-const Delete = () => {
+interface DeleteProps{
+    del: () => Promise<void>
+}
+
+const Delete = (props: DeleteProps) => {
     return (
         <svg
+            onClick={() => props.del()}
             style={{
                 width: "25px",
                 height: "25px",

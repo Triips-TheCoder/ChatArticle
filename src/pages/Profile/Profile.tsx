@@ -6,10 +6,12 @@ import {ref, getDownloadURL, uploadBytes, deleteObject} from "firebase/storage"
 import {STORAGE, DB, AUTH} from '../../firebase'
 import {getDoc, doc, DocumentData, updateDoc} from 'firebase/firestore'
 import Delete from '../../components/svg/Delete'
+import {useNavigate} from "react-router-dom"
 
 const Profile = () => {
     const [img, setImg] = useState<File | null>(null)
     const [user, setUser] = useState<DocumentData | null>(null)
+    const navigate = useNavigate()
     let avatar: string = ""
 
     useEffect(() => {
@@ -41,6 +43,23 @@ const Profile = () => {
         }
     }, [img])
 
+    const deleteImage = async () => {
+        try {
+            const confirm = window.confirm('Voulez-vous supprimer cette image ?')
+            if (confirm) {
+                await deleteObject(ref(STORAGE, user!.avatarPath))
+                await updateDoc(doc(DB, "users", AUTH.currentUser!.uid), {
+                    avatar: "",
+                    avatarPath: ""
+                })
+                navigate("/", {replace: true})
+            }
+
+        } catch (err: any) {
+            console.error(err.message)
+        }
+    }
+
     return user ? (
         <section className="register-login">
             <div className="profile-container">
@@ -51,7 +70,7 @@ const Profile = () => {
                             <label htmlFor="photo">
                                 <Camera/>
                             </label>
-                            {user.avatar ? <Delete/> : null }
+                            {user.avatar ? <Delete del={deleteImage}/> : null }
                             <input type="file" accept="image/*" style={{display: "none"}} id="photo"
                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                        const inputEl = e.target as HTMLInputElement
