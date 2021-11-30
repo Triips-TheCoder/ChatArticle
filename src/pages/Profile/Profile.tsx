@@ -5,6 +5,7 @@ import {useEffect, useState} from 'react'
 import {ref, getDownloadURL, uploadBytes, deleteObject} from "firebase/storage"
 import {STORAGE, DB, AUTH} from '../../firebase'
 import {getDoc, doc, DocumentData, updateDoc} from 'firebase/firestore'
+import Delete from '../../components/svg/Delete'
 
 const Profile = () => {
     const [img, setImg] = useState<File | null>(null)
@@ -50,6 +51,7 @@ const Profile = () => {
                             <label htmlFor="photo">
                                 <Camera/>
                             </label>
+                            {user.avatar ? <Delete/> : null }
                             <input type="file" accept="image/*" style={{display: "none"}} id="photo"
                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                        const inputEl = e.target as HTMLInputElement
