@@ -8,7 +8,6 @@ import AuthProvider from './context/auth'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import Profile from './pages/Profile/Profile'
 
-
 function App() {
     return (
         <AuthProvider>

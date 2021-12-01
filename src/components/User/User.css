@@ -1,0 +1,42 @@
+.user-wrapper {
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-detail {
+    display: flex;
+    align-items: center;
+}
+
+.user-detail h4 {
+    margin-left: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--color-2);
+    object-fit: cover;
+}
+
+.user-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.online {
+    background: #34eb52;
+}
+
+.offline {
+    background: var(--color-5)
+}
