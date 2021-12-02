@@ -1,19 +1,22 @@
 import "./Home.css"
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {DB, AUTH} from "../../firebase"
-import {collection, query, where, onSnapshot, DocumentData} from "firebase/firestore"
-//import {User} from "firebase/auth";
+import {collection, query, where, onSnapshot, addDoc, Timestamp, DocumentData} from "firebase/firestore"
 import User from "../../components/User/User"
+import MessageForm from "../../components/MessageForm/MessageForm";
 
 const Home = () => {
     const [users, setUsers] = useState<DocumentData[]>([])
     const [chat, setChat] = useState<DocumentData | null>(null)
+    const [text, setText] = useState<string>("")
+    const loggedInUserId = AUTH.currentUser!.uid
 
-    /* Permet d'envoyer une requête à la base de donnée pour obtenir la liste de tout les profiles
+    /* Permet d'envoyer une requête à la base de donnée
+    pour obtenir la liste de tout les profiles
     autre que celui de l'utilisateur connecté. */
     useEffect(() => {
         const usersRef = collection(DB, 'users')
-        const q = query(usersRef, where("uid", 'not-in', [AUTH.currentUser!.uid]))
+        const q = query(usersRef, where("uid", 'not-in', [loggedInUserId]))
         const unsub = onSnapshot(q, querySnapshot => {
             let allUsersExceptConnectedUsers: DocumentData[] = []
             querySnapshot.forEach(doc => {
@@ -30,6 +33,21 @@ const Home = () => {
         console.log(user)
     }
 
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const receivingUserId: string = chat!.uid
+        const messagesId: string = loggedInUserId > receivingUserId ? `${loggedInUserId + receivingUserId}` : `${receivingUserId + loggedInUserId}`
+
+        await addDoc(collection(DB, "messages", messagesId, "chat"), {
+            text,
+            from: loggedInUserId,
+            to: receivingUserId,
+            createdAt: Timestamp.fromDate(new Date())
+        })
+
+        setText('')
+    }
+
     return (
         <div className="home-container">
             <div className="users-container">
@@ -37,9 +55,12 @@ const Home = () => {
             </div>
             <div className="messages-container">
                 {chat ?
-                    <div className="messages-user">
-                        <h3>{chat.name}</h3>
-                    </div>
+                    <>
+                        <div className="messages-user">
+                            <h3>{chat.name}</h3>
+                        </div>
+                        <MessageForm handleSubmit={handleSubmit} text={text} setText={setText}/>
+                    </>
                     :
                     <h3 className="no-conv">Selectionne un utilisateur pour commencer une conversation</h3>}
             </div>

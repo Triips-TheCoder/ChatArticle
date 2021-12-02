@@ -1,5 +1,5 @@
 import './Register.css'
-import {useState} from "react"
+import React, {useState} from "react"
 import {createUserWithEmailAndPassword} from "firebase/auth"
 import {AUTH, DB} from '../../firebase'
 import {setDoc, doc, Timestamp} from 'firebase/firestore'
@@ -26,11 +26,21 @@ const Register = () => {
 
     const {name, email, password, error, loading} = data
 
+    /**
+     * Remplis les propriétés name, email et password de l'objet data
+     * avec les valeurs que l'utilisateur rentre dans l'input.
+     * @param e {React.ChangeEvent<HTMLInputElement>} - La valeur de l'input
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target as HTMLInputElement
         setData({...data, [target.name]: target.value})
     }
 
+    /**
+     * Envoie les données rentrer dans le formulaire en faisant toutes les vérifications nécéssaires
+     * et renvoie l'utilisateur vers la page home si tout est ok.
+     * @param e {React.FormEvent<HTMLFormElement>} - Event d"envoie du formulaire
+     */
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setData({
@@ -101,7 +111,8 @@ const Register = () => {
                 </div>
                 {error && <p className="error">{error}</p>}
                 <div className="btn-container">
-                    <button className="btn" disabled={loading}>{loading ? "Inscription en cours..." : "S'inscrire !"}</button>
+                    <button className="btn"
+                            disabled={loading}>{loading ? "Inscription en cours..." : "S'inscrire !"}</button>
                 </div>
             </form>
         </section>
