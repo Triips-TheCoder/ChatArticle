@@ -7,7 +7,7 @@ en le combinant avec Typescript et Firebase.
 
 Lien de l'application : www.a-rajouter.com
 
-#Qui a fait quoi ? 
+# Qui a fait quoi ? 
 Flavie : 
 - Mise en place du squelette pour le back avec les formulaires
 - Login
