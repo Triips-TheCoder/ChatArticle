@@ -32,7 +32,6 @@ const Home = () => {
 
     const selectUser = (user: DocumentData) => {
         setChat(user)
-        console.log(user)
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,21 +41,25 @@ const Home = () => {
 
         let url: string
 
-        if (img) {
-            const imgRef = ref(STORAGE, `images/${new Date().getTime()} - ${img.name}`)
-            const snap = await uploadBytes(imgRef, img)
-            url = await getDownloadURL(ref(STORAGE, snap.ref.fullPath))
+        try {
+            if (img) {
+                const imgRef = ref(STORAGE, `images/${new Date().getTime()} - ${img.name}`)
+                const snap = await uploadBytes(imgRef, img)
+                url = await getDownloadURL(ref(STORAGE, snap.ref.fullPath))
+            }
+
+            await addDoc(collection(DB, "messages", messagesId, "chat"), {
+                text,
+                from: loggedInUserId,
+                to: receivingUserId,
+                media: url! || "",
+                createdAt: Timestamp.fromDate(new Date())
+            })
+
+            setText("")
+        } catch (err: any) {
+          console.error(err.message)
         }
-
-        await addDoc(collection(DB, "messages", messagesId, "chat"), {
-            text,
-            from: loggedInUserId,
-            to: receivingUserId,
-            media: url! || "",
-            createdAt: Timestamp.fromDate(new Date())
-        })
-
-        setText('')
     }
 
     return (
