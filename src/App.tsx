@@ -1,4 +1,3 @@
-import './App.css'
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import Home from "./pages/Home/Home"
 import Navbar from "./components/Navbar/Navbar"
@@ -7,6 +6,7 @@ import Login from './pages/Login/Login'
 import AuthProvider from './context/auth'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import Profile from './pages/Profile/Profile'
+import './App.css'
 
 function App() {
     return (

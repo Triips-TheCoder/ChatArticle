@@ -10,7 +10,7 @@ import {
     Timestamp,
     where,
     orderBy,
-    setDoc, doc
+    setDoc, doc, getDoc, updateDoc
 } from "firebase/firestore"
 import User from "../../components/User/User"
 import MessageForm from "../../components/MessageForm/MessageForm";
@@ -42,24 +42,36 @@ const Home = () => {
         return () => unsub()
     }, [])
 
-    const selectUser = (user: DocumentData) => {
-        setChat(user)
+    const selectUser = async (user: DocumentData) => {
+        try {
+            // Utilisateur sélectionné
+            setChat(user)
 
-        const receivingUser: string = user.uid
-        const messagesId: string = loggedInUserId > receivingUser ? `${loggedInUserId + receivingUser}` : `${receivingUser + loggedInUserId}`
+            const receivingUser: string = user.uid
+            const messagesId: string = loggedInUserId > receivingUser ? `${loggedInUserId + receivingUser}` : `${receivingUser + loggedInUserId}`
 
-        const msgRef = collection(DB, "messages", messagesId, 'chat')
-        const q = query(msgRef, orderBy('createdAt', 'asc'))
+            const msgRef = collection(DB, "messages", messagesId, 'chat')
+            const q = query(msgRef, orderBy('createdAt', 'asc'))
 
-        onSnapshot(q, querySnapshot => {
-            let freshMessages: DocumentData[] = []
+            onSnapshot(q, querySnapshot => {
+                let freshMessages: DocumentData[] = []
 
-            querySnapshot.forEach((doc) => {
-                freshMessages.push(doc.data())
+                querySnapshot.forEach((doc) => {
+                    freshMessages.push(doc.data())
+                })
+
+                setMessages(freshMessages)
             })
 
-            setMessages(freshMessages)
-        })
+            const docSnap = await getDoc(doc(DB, "lastMessage", messagesId))
+
+            if (docSnap.data()?.from !== loggedInUserId) {
+                await updateDoc(doc(DB, 'lastMessage', messagesId), {unread: false})
+            }
+
+        } catch(err: any) {
+            console.error(err)
+        }
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

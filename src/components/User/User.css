@@ -44,3 +44,24 @@
 .selected-user {
     background: var(--color-6);
 }
+
+.truncate {
+    font-size: 14px;
+    white-space: nowrap;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.truncate strong {
+    margin-right: 10px;
+}
+
+.unread {
+    margin-left: 10px;
+    background: var(--color-3);
+    color: white;
+    padding: 2px 4px;
+    border-radius: 10px;
+}
+

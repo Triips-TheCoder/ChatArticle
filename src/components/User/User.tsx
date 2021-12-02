@@ -28,15 +28,29 @@ const User = (props: UserProps) => {
     }, [])
 
     return (
-        <div className={`user-wrapper ${chat.name === user.name && 'selected-user'}`}onClick={() => selectUser(user)}>
-            <div className="user-info">
-                <div className="user-detail">
-                    <img src={user.avatar || profileImg} alt="image de profile" className="avatar"/>
-                    <h4>{user.name}</h4>
+        <>
+            <div className={`user-wrapper ${chat.name === user.name && 'selected-user'}`}
+                 onClick={() => selectUser(user)}>
+                <div className="user-info">
+                    <div className="user-detail">
+                        <img src={user.avatar || profileImg} alt="image de profile" className="avatar"/>
+                        <h4>{user.name}</h4>
+                        {data?.from !== loggedInUserId && data?.unread && <small className="unread">New</small>}
+                    </div>
+                    <div className={`user-status ${user.isOnline ? 'online' : 'offline'}`}/>
                 </div>
-                <div className={`user-status ${user.isOnline ? 'online' : 'offline'}`}/>
+                {data && (
+                    <p className="truncate">
+                        <strong>{data.from === loggedInUserId ? "Me" : null}</strong>
+                        {data.text}
+                    </p>
+                )}
             </div>
-        </div>
+            <div onClick={() => selectUser(user)} className={`sm-container ${chat.name === user.name && "selected-user"}`}>
+                <img src={user.avatar || profileImg} alt="image de profil" className="avatar sm-screen"/>
+            </div>
+        </>
+
     )
 }
 

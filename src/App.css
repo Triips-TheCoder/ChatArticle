@@ -29,3 +29,56 @@ a {
   margin-top: 30px;
   padding: 0 20px;
 }
+
+.sm-screen {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .home-container {
+    grid-template-columns: 2fr 3fr;
+  }
+
+  .message-form {
+    left: 3%;
+    right: 0;
+    bottom: 0;
+  }
+
+  .message-wrapper p {
+    max-width: 75%;
+  }
+
+}
+
+@media screen and (max-width: 576px) {
+  .home-container {
+    grid-template-columns: 1fr 5fr;
+  }
+
+  .user-wrapper {
+    display: none;
+  }
+
+  .message-form .btn {
+    margin: 0;
+  }
+  .sm-container {
+    padding: 10px 0;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .sm-screen {
+    display: inline-block;
+  }
+
+  .message-form input {
+    width: 50vw;
+    margin: 0 10px;
+  }
+
+  .message-wrapper p {
+    max-width: 100%;
+  }
+}

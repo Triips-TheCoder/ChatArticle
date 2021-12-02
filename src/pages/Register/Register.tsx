@@ -29,7 +29,7 @@ const Register = () => {
     /**
      * Remplis les propriétés name, email et password de l'objet data
      * avec les valeurs que l'utilisateur rentre dans l'input.
-     * @param e {React.ChangeEvent<HTMLInputElement>} - La valeur de l'input
+     * @param e {React.ChangeEvent<HTMLInputElement>} - Event de l'input
      */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target as HTMLInputElement
