@@ -1,11 +1,11 @@
 import './Profile.css'
 import profileImg from '../../../src/pages/Profile/logo192.png'
-import Camera from '../../components/svg/Camera'
+import Camera from '../../components/Svg/Camera'
 import {useEffect, useState} from 'react'
 import {ref, getDownloadURL, uploadBytes, deleteObject} from "firebase/storage"
 import {STORAGE, DB, AUTH} from '../../firebase'
 import {getDoc, doc, DocumentData, updateDoc} from 'firebase/firestore'
-import Delete from '../../components/svg/Delete'
+import Delete from '../../components/Svg/Delete'
 import {useNavigate} from "react-router-dom"
 
 const Profile = () => {

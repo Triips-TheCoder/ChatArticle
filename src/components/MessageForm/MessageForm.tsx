@@ -1,5 +1,5 @@
 import "./MessageForm.css"
-import Upload from "../svg/Upload"
+import Upload from "../Svg/Upload"
 import React, {Dispatch, SetStateAction} from "react";
 
 interface MessageFormProps {

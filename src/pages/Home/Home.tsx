@@ -1,7 +1,17 @@
 import "./Home.css"
 import React, {useEffect, useState} from "react";
 import {AUTH, DB, STORAGE} from "../../firebase"
-import {addDoc, collection, DocumentData, onSnapshot, query, Timestamp, where, orderBy} from "firebase/firestore"
+import {
+    addDoc,
+    collection,
+    DocumentData,
+    onSnapshot,
+    query,
+    Timestamp,
+    where,
+    orderBy,
+    setDoc, doc
+} from "firebase/firestore"
 import User from "../../components/User/User"
 import MessageForm from "../../components/MessageForm/MessageForm";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage"
@@ -55,7 +65,7 @@ const Home = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const receivingUserId: string = chat.uid
-        const messagesId: string = loggedInUserId > receivingUserId ? `${loggedInUserId + receivingUserId}` : `${receivingUserId + loggedInUserId}`
+        const messageId: string = loggedInUserId > receivingUserId ? `${loggedInUserId + receivingUserId}` : `${receivingUserId + loggedInUserId}`
 
         let url: string
 
@@ -66,12 +76,20 @@ const Home = () => {
                 url = await getDownloadURL(ref(STORAGE, snap.ref.fullPath))
             }
 
-            await addDoc(collection(DB, "messages", messagesId, "chat"), {
+            await addDoc(collection(DB, "messages", messageId, "chat"), {
                 text,
                 from: loggedInUserId,
                 to: receivingUserId,
                 media: url! || "",
                 createdAt: Timestamp.fromDate(new Date())
+            })
+
+            await setDoc(doc(DB, 'lastMessage', messageId), {
+                text,
+                from: loggedInUserId,
+                to: receivingUserId,
+                media: url! || "",
+                unread: true,
             })
 
             setText("")
@@ -83,7 +101,7 @@ const Home = () => {
     return (
         <div className="home-container">
             <div className="users-container">
-                {users.map(user => <User key={user.uid as string} user={user} selectUser={selectUser}/>)}
+                {users.map(user => <User key={user.uid as string} user={user} selectUser={selectUser} loggedInUserId={loggedInUserId} chat={chat}/>)}
             </div>
             <div className="messages-container">
                 {chat ?
