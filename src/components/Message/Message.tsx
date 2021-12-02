@@ -14,6 +14,7 @@ const Message = (props: MessageProps) => {
     const scrollRef = useRef<HTMLDivElement | null>(null)
     const {key, message, loggedInUserId} = props
 
+    // Permet de scroller automatiquement tout en bas de la conversation lorsuqu'un message est envoyé
     useEffect(() => {
         scrollRef.current?.scrollIntoView({behavior: 'smooth'})
     }, [message])

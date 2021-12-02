@@ -26,8 +26,8 @@ const Home = () => {
     const loggedInUserId = AUTH.currentUser!.uid
 
     /* Permet d'envoyer une requête à la base de donnée
-    pour obtenir la liste de tout les profiles
-    autre que celui de l'utilisateur connecté. */
+       pour obtenir la liste de tout les profiles
+       autre que celui de l'utilisateur connecté. */
     useEffect(() => {
         const usersRef = collection(DB, 'users')
         const q = query(usersRef, where("uid", 'not-in', [loggedInUserId]))
@@ -42,6 +42,10 @@ const Home = () => {
         return () => unsub()
     }, [])
 
+    /**
+     * @param user {DocumentData} - L'utilisateur sur lequel l'utilisateur connecté a cliqué
+     * @description Envoie une requête vers la base de donnée pour obtenir tout les messages envoyés entre deux utilisateurs.
+     */
     const selectUser = async (user: DocumentData) => {
         try {
             // Utilisateur sélectionné
@@ -65,6 +69,8 @@ const Home = () => {
 
             const docSnap = await getDoc(doc(DB, "lastMessage", messagesId))
 
+            /* Utilise la fonction updateDoc de firebase pour UPDATE la valeur unread du dernier message envoyé
+               Cela permet d'enlever la notification "NEW" seulement si c'est l'utilisateur qui a reçu le message qui clique sur le message. */
             if (docSnap.data()?.from !== loggedInUserId) {
                 await updateDoc(doc(DB, 'lastMessage', messagesId), {unread: false})
             }
@@ -74,6 +80,10 @@ const Home = () => {
         }
     }
 
+    /**
+     * @param e{React.FormEvent<HTMLFormElement>} - Event d'envoie du formalaire
+     * @description Envoie les messages / images rentrer dans l'input du chat dans la base de donnée et reset l'input à "".
+     */
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const receivingUserId: string = chat.uid

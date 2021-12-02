@@ -1,7 +1,6 @@
-import {FC, useContext} from 'react'
-import {Navigate, PathRouteProps, Route, RouteProps} from 'react-router-dom'
+import {useContext} from 'react'
+import {Navigate} from 'react-router-dom'
 import {AuthContext} from '../../context/auth'
-import Home from '../../pages/Home/Home'
 
 const PrivateRoute = ({children}: { children: JSX.Element}) => {
 

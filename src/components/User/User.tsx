@@ -16,9 +16,11 @@ const User = (props: UserProps) => {
     const [data, setData] = useState<DocumentData>()
     const receivingUserId = user?.uid
 
+
     useEffect(() => {
         const messageId: string = loggedInUserId > receivingUserId ? `${loggedInUserId + receivingUserId}` : `${receivingUserId + loggedInUserId}`
 
+        // Permet d'obtenir le dernier message envoyer
         // @ts-ignore
         let unsub = onSnapshot(doc(DB, 'lastMessage', messageId), (doc: DocumentSnapshot<DocumentData>) => {
             setData(doc.data())

@@ -11,6 +11,9 @@ const Navbar = () => {
     const user = useContext(AuthContext)
     const navigate = useNavigate()
 
+    /**
+     * @description renvoie l'utilisateur vers la page se connecter lorsqu'il se déconnecte.
+     */
     const handleSignOut = async () => {
         await updateDoc(
             doc(DB, 'users', AUTH.currentUser!.uid),

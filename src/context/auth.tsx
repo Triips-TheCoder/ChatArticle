@@ -14,6 +14,9 @@ const AuthProvider = ({children}: AuthContextProviderProps) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+
+        /* Une fonction intégré dans firebase qui permet de gérer les authentification
+           Cette fonction surveille le statut de l'utilisateur (online ou offline) */
         onAuthStateChanged(AUTH, user => {
             setUser(user)
             setLoading(false)
