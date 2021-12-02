@@ -1,14 +1,16 @@
 import "./Home.css"
 import React, {useEffect, useState} from "react";
-import {DB, AUTH} from "../../firebase"
-import {collection, query, where, onSnapshot, addDoc, Timestamp, DocumentData} from "firebase/firestore"
+import {AUTH, DB, STORAGE} from "../../firebase"
+import {addDoc, collection, DocumentData, onSnapshot, query, Timestamp, where} from "firebase/firestore"
 import User from "../../components/User/User"
 import MessageForm from "../../components/MessageForm/MessageForm";
+import {getDownloadURL, ref, uploadBytes} from "firebase/storage"
 
 const Home = () => {
     const [users, setUsers] = useState<DocumentData[]>([])
-    const [chat, setChat] = useState<DocumentData | null>(null)
+    const [chat, setChat] = useState<DocumentData>({})
     const [text, setText] = useState<string>("")
+    const [img, setImg] = useState<File | null>(null)
     const loggedInUserId = AUTH.currentUser!.uid
 
     /* Permet d'envoyer une requête à la base de donnée
@@ -35,13 +37,22 @@ const Home = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const receivingUserId: string = chat!.uid
+        const receivingUserId: string = chat.uid
         const messagesId: string = loggedInUserId > receivingUserId ? `${loggedInUserId + receivingUserId}` : `${receivingUserId + loggedInUserId}`
+
+        let url: string
+
+        if (img) {
+            const imgRef = ref(STORAGE, `images/${new Date().getTime()} - ${img.name}`)
+            const snap = await uploadBytes(imgRef, img)
+            url = await getDownloadURL(ref(STORAGE, snap.ref.fullPath))
+        }
 
         await addDoc(collection(DB, "messages", messagesId, "chat"), {
             text,
             from: loggedInUserId,
             to: receivingUserId,
+            media: url! || "",
             createdAt: Timestamp.fromDate(new Date())
         })
 
@@ -59,7 +70,11 @@ const Home = () => {
                         <div className="messages-user">
                             <h3>{chat.name}</h3>
                         </div>
-                        <MessageForm handleSubmit={handleSubmit} text={text} setText={setText}/>
+                        <MessageForm
+                            handleSubmit={handleSubmit}
+                            text={text}
+                            setText={setText}
+                            setImg={setImg}/>
                     </>
                     :
                     <h3 className="no-conv">Selectionne un utilisateur pour commencer une conversation</h3>}
