@@ -5,6 +5,7 @@ import {addDoc, collection, DocumentData, onSnapshot, query, Timestamp, where, o
 import User from "../../components/User/User"
 import MessageForm from "../../components/MessageForm/MessageForm";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage"
+import Message from "../../components/Message/Message";
 
 const Home = () => {
     const [users, setUsers] = useState<DocumentData[]>([])
@@ -48,7 +49,6 @@ const Home = () => {
             })
 
             setMessages(freshMessages)
-            console.log(messages)
         })
     }
 
@@ -90,6 +90,9 @@ const Home = () => {
                     <>
                         <div className="messages-user">
                             <h3>{chat.name}</h3>
+                        </div>
+                        <div className="messages">
+                            {messages.length ? messages.map((message, i) => <Message key={i} message={message} loggedInUserId={loggedInUserId}/>) : null}
                         </div>
                         <MessageForm
                             handleSubmit={handleSubmit}
