@@ -7,6 +7,7 @@ import User from "../../components/User/User"
 
 const Home = () => {
     const [users, setUsers] = useState<DocumentData[]>([])
+    const [chat, setChat] = useState<DocumentData | null>(null)
 
     /* Permet d'envoyer une requête à la base de donnée pour obtenir la liste de tout les profiles
     autre que celui de l'utilisateur connecté. */
@@ -25,6 +26,7 @@ const Home = () => {
     }, [])
 
     const selectUser = (user: DocumentData) => {
+        setChat(user)
         console.log(user)
     }
 
@@ -32,6 +34,14 @@ const Home = () => {
         <div className="home-container">
             <div className="users-container">
                 {users.map(user => <User key={user.uid as string} user={user} selectUser={selectUser}/>)}
+            </div>
+            <div className="messages-container">
+                {chat ?
+                    <div className="messages-user">
+                        <h3>{chat.name}</h3>
+                    </div>
+                    :
+                    <h3 className="no-conv">Selectionne un utilisateur pour commencer une conversation</h3>}
             </div>
         </div>
     )

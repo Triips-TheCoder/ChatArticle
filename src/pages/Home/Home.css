@@ -12,3 +12,21 @@
     border-right: 2px solid var(--color-6);
     overflow-y: auto;
 }
+
+
+.messages-container {
+    position: relative;
+    width: 100%;
+}
+
+.messages-user {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid var(--color-6);
+}
+
+.no-conv {
+    font-size: 2.0581039755352vw;
+    color: var(--color-4);
+    text-align: center;
+}
