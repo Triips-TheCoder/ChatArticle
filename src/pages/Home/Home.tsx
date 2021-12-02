@@ -1,7 +1,7 @@
 import "./Home.css"
 import React, {useEffect, useState} from "react";
 import {AUTH, DB, STORAGE} from "../../firebase"
-import {addDoc, collection, DocumentData, onSnapshot, query, Timestamp, where} from "firebase/firestore"
+import {addDoc, collection, DocumentData, onSnapshot, query, Timestamp, where, orderBy} from "firebase/firestore"
 import User from "../../components/User/User"
 import MessageForm from "../../components/MessageForm/MessageForm";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage"
@@ -11,6 +11,7 @@ const Home = () => {
     const [chat, setChat] = useState<DocumentData>({})
     const [text, setText] = useState<string>("")
     const [img, setImg] = useState<File | null>(null)
+    const [messages, setMessages] = useState<DocumentData[]>([])
     const loggedInUserId = AUTH.currentUser!.uid
 
     /* Permet d'envoyer une requête à la base de donnée
@@ -32,6 +33,23 @@ const Home = () => {
 
     const selectUser = (user: DocumentData) => {
         setChat(user)
+
+        const receivingUser: string = user.uid
+        const messagesId: string = loggedInUserId > receivingUser ? `${loggedInUserId + receivingUser}` : `${receivingUser + loggedInUserId}`
+
+        const msgRef = collection(DB, "messages", messagesId, 'chat')
+        const q = query(msgRef, orderBy('createdAt', 'asc'))
+
+        onSnapshot(q, querySnapshot => {
+            let freshMessages: DocumentData[] = []
+
+            querySnapshot.forEach((doc) => {
+                freshMessages.push(doc.data())
+            })
+
+            setMessages(freshMessages)
+            console.log(messages)
+        })
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
