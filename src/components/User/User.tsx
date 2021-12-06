@@ -43,7 +43,7 @@ const User = (props: UserProps) => {
                 </div>
                 {data && (
                     <p className="truncate">
-                        <strong>{data.from === loggedInUserId ? "Me" : null}</strong>
+                        <strong>{data.from === loggedInUserId ? "Me :" : null}</strong>
                         {data.text}
                     </p>
                 )}
