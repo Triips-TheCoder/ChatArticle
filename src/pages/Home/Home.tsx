@@ -70,10 +70,11 @@ const Home = () => {
 
             const docSnap = await getDoc(doc(DB, "lastMessage", messagesId))
 
-            /* Utilise la fonction updateDoc de firebase pour UPDATE la valeur unread du dernier message envoyé
-               Cela permet d'enlever la notification "NEW" seulement si c'est l'utilisateur qui a reçu le message qui clique sur le message.
+            /*
+                Utilise la fonction updateDoc de firebase pour UPDATE la valeur unread du dernier message envoyé
+                Cela permet d'enlever la notification "NEW" seulement si c'est l'utilisateur qui a reçu le message qui clique sur le message.
             */
-            if (docSnap.data()?.from !== loggedInUserId) {
+            if (docSnap.data() && docSnap.data()!.from !== loggedInUserId) {
                 await updateDoc(doc(DB, 'lastMessage', messagesId), {unread: false})
             }
 

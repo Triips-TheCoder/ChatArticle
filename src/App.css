@@ -11,6 +11,10 @@ a {
   text-decoration: none;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 .register-login {
   width: clamp(290px, 80%, 500px);
   margin: 100px auto 0 auto;
